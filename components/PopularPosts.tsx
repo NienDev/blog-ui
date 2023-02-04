@@ -36,7 +36,7 @@ const PopularPosts = () => {
       </Typography>
       <Grid container>
         <Swiper
-          slidesPerView={`${window.width < 1200 ? 1 : 2}`}
+          slidesPerView={`${window.width < 1200 ? Number(1) : Number(2)}`}
           grabCursor={true}
         >
           {Popular.map((post: Post) => (
