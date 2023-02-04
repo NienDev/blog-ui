@@ -23,6 +23,7 @@ const PopularPosts = () => {
 
   const Popular = data;
 
+  const slidesNum: number = window.width < 1200 ? Number(1) : Number(2);
   return (
     <>
       <Typography
@@ -35,10 +36,7 @@ const PopularPosts = () => {
         Most Popular
       </Typography>
       <Grid container>
-        <Swiper
-          slidesPerView={`${window.width < 1200 ? Number(1) : Number(2)}`}
-          grabCursor={true}
-        >
+        <Swiper slidesPerView={slidesNum} grabCursor={true}>
           {Popular.map((post: Post) => (
             <SwiperSlide key={post.id}>
               <Blog key={post.id} {...post} type="popular" />
