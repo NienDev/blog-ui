@@ -154,6 +154,7 @@ function Blog(props: BlogProps) {
           height={300}
           alt="featured blog image"
           className={`thumbnail ${props.type}`}
+          priority
         />
         <Box className="description">
           <Typography id="card-detail">
