@@ -5,18 +5,25 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { postId } = req.query;
+  let { postId } = req.query;
+
+  if (!postId) {
+    res.status(404).json({ msg: "Invalid Post ID" });
+    return;
+  }
+  let ID = postId[0];
+  console.log(postId);
   const { Posts } = data;
   if (!postId) {
     res.status(404).json({ msg: "Data not found" });
     return;
   }
-  let post = Posts.find((post) => post.id == Number(postId));
+  let post = Posts.find((post) => post.id == Number(ID));
   if (post) {
     res.status(200).json(post);
   } else {
     let posts = Posts.filter((post) =>
-      post.category.toLowerCase().includes(postId[0])
+      post.category.toLowerCase().includes(ID)
     );
     if (posts) {
       res.status(200).json(posts);

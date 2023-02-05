@@ -44,6 +44,7 @@ export default function FeaturedBlog() {
         width={400}
         height={500}
         alt="background image"
+        priority={true}
       />
       <Typography variant="h4" fontWeight="bold" gutterBottom marginTop={2}>
         Trending

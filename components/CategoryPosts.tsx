@@ -21,12 +21,12 @@ const CategoryPosts = () => {
     data: businessPosts,
     error,
     isLoading,
-  } = useSWR(`/api/posts/business`, fetcher);
+  } = useSWR(`http://localhost:3000/api/posts/business`, fetcher);
   const {
     data: travelPosts,
     error: error1,
     isLoading: isLoading1,
-  } = useSWR("/api/posts/travel", fetcher);
+  } = useSWR("http://localhost:3000/api/posts/travel", fetcher);
 
   if (isLoading) return <h1>Loading...</h1>;
   if (isLoading1) return <h1>Loading...</h1>;

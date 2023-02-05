@@ -11,7 +11,10 @@ const PopularPosts = () => {
   const window = useWindowDimensions();
 
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  const { data, error, isLoading } = useSWR("/api/popular", fetcher);
+  const { data, error, isLoading } = useSWR(
+    "http://localhost:3000/api/popular",
+    fetcher
+  );
 
   if (isLoading) {
     return <h1>Loading...</h1>;
