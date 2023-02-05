@@ -24,3 +24,8 @@ img {
   object-fit: cover !important;
   object-position: center !important;
 }
+
+a {
+  color: #000;
+  text-decoration: none;
+}

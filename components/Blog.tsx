@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Box, Typography } from "@mui/material";
 import tempImg from "../public/temp.jpg";
 import styled from "@emotion/styled";
+import Link from "next/link";
 
 interface BlogProps {
   id: number;
@@ -17,6 +18,8 @@ interface BlogProps {
   published: string;
   category: string;
   type: string; // featured, card, popular
+  isReverse?: boolean;
+  showDescription?: boolean;
 }
 
 const StyledImage = styled(Image)`
@@ -25,7 +28,7 @@ const StyledImage = styled(Image)`
 
 const StyledBlog = styled.div`
   .latest {
-    width: 400px !important;
+    width: 300px !important;
   }
   .popular {
     width: 500px !important;
@@ -42,6 +45,11 @@ const StyledBlog = styled.div`
   .description {
     text-align: left;
     /* flex: 1; */
+  }
+  .description.card {
+    max-width: 300px !important;
+  }
+  .container.latest {
   }
 
   .category {
@@ -67,7 +75,7 @@ const StyledBlog = styled.div`
   }
 
   img.latest {
-    width: 380px !important;
+    width: 100% !important;
     height: 250px !important;
   }
   img.popular {
@@ -106,6 +114,9 @@ const StyledBlog = styled.div`
   }
 
   @media (max-width: 980px) {
+    .container {
+      justify-content: center;
+    }
   }
 
   @media (max-width: 900px) {
@@ -137,6 +148,20 @@ const StyledBlog = styled.div`
     overflow: hidden;
     position: relative;
   }
+
+  .reverse {
+    flex-direction: column-reverse !important;
+  }
+  .description {
+    display: flex;
+    flex-direction: column;
+  }
+  .description.reverse {
+    flex-direction: column-reverse !important;
+  }
+  #description {
+    width: 500px;
+  }
 `;
 
 const StyledUserImage = styled(Image)`
@@ -147,7 +172,10 @@ const StyledUserImage = styled(Image)`
 function Blog(props: BlogProps) {
   return (
     <StyledBlog className={`${props.type}`}>
-      <Box className={`container ${props.type}`}>
+      <Box
+        className={`container ${props.type} ${props.isReverse && "reverse"}
+      `}
+      >
         <StyledImage
           src={props.img}
           width={300}
@@ -156,28 +184,36 @@ function Blog(props: BlogProps) {
           className={`thumbnail ${props.type}`}
           priority
         />
-        <Box className="description">
-          <Typography id="card-detail">
-            <span className="category">{props.category}</span> -{" "}
-            {props.published}
-          </Typography>
-          <Typography
-            variant={`${
-              props.type == "card"
-                ? "h6"
-                : props.type == "popular"
-                ? "h5"
-                : "h4"
-            }`}
-            fontWeight="bold"
-            gutterBottom
-            id="title"
-          >
-            {props.title}
-          </Typography>
-          <Typography id="card-body" marginBottom={2}>
-            {props.subtitle}
-          </Typography>
+        <Box
+          className={`description ${props.isReverse && "reverse"} ${
+            props.type
+          }`}
+        >
+          <div>
+            <Typography id="card-detail">
+              <span className="category">{props.category}</span> -{" "}
+              {props.published}
+            </Typography>
+            <Link href={`/${props.type}/${props.id}`}>
+              <Typography
+                variant={`${
+                  props.type == "card"
+                    ? "h6"
+                    : props.type == "popular"
+                    ? "h5"
+                    : "h5"
+                }`}
+                fontWeight="bold"
+                gutterBottom
+                id="title"
+              >
+                {props.title}
+              </Typography>
+            </Link>
+            <Typography id="card-body" marginBottom={2}>
+              {props.subtitle}
+            </Typography>
+          </div>
           <Box sx={{ display: "flex", gap: "1em" }}>
             <StyledUserImage
               src={props.author.img}
@@ -198,6 +234,11 @@ function Blog(props: BlogProps) {
           </Box>
         </Box>
       </Box>
+      {props.showDescription && (
+        <Typography variant="body1" id="description" marginTop={2}>
+          {props.description}
+        </Typography>
+      )}
     </StyledBlog>
   );
 }
