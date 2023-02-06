@@ -1,20 +1,23 @@
 import Blog from "@/components/Blog";
 import { Post } from "@/types";
-import styled from "@emotion/styled";
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import data from "../api/data";
-export default function FeaturedPost(props: {
-  post: Post[];
+import styled from "@emotion/styled";
+
+export default function LatestPost(props: {
+  post: Post;
   relatedPosts: Post[];
 }) {
-  const realPost = props.post[0];
+  const realPost = props.post;
+
   const StyledFeaturedPost = styled(Box)`
     hr {
       width: 500px;
     }
   `;
+
   return (
-    <StyledFeaturedPost
+    <Box
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -27,8 +30,8 @@ export default function FeaturedPost(props: {
         key={realPost.id}
         {...realPost}
         type="popular"
-        isReverse={true}
         showDescription
+        isReverse
       />
       <hr />
       <Typography variant="h5" fontWeight="bold" marginBottom={4} marginTop={4}>
@@ -41,36 +44,42 @@ export default function FeaturedPost(props: {
           </Grid>
         ))}
       </Grid>
-    </StyledFeaturedPost>
+    </Box>
   );
 }
 
+function getPosts() {
+  const { Posts } = data;
+  return Posts;
+}
+
 function getIds() {
-  const { Trending } = data;
-  return Trending.map((post) => ({
+  const posts = getPosts();
+  return posts.map((post) => ({
     params: {
-      featuredId: post.id.toString(),
+      latestId: post.id.toString(),
     },
   }));
 }
 
-function getFeaturedPost(id: number) {
-  const { Trending } = data;
-  return Trending.filter((post) => post.id == id);
+function getPost(id: number) {
+  const posts = getPosts();
+  const post = posts.filter((post) => post.id == id);
+  return post[0];
 }
 
 function getRelatedPosts(category: string) {
-  const { Trending } = data;
-  return Trending.filter((post) => post.category == category);
+  const { Posts } = data;
+  return Posts.filter((post) => post.category == category);
 }
 
 export async function getStaticProps(context: any) {
-  const { featuredId } = context.params;
-  const featuredPost = getFeaturedPost(featuredId);
-  const relatedPosts = getRelatedPosts(featuredPost[0].category);
+  const { latestId } = context.params;
+  const post = getPost(latestId);
+  const relatedPosts = getRelatedPosts(post.category);
   return {
     props: {
-      post: featuredPost,
+      post,
       relatedPosts,
     },
   };

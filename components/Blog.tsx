@@ -36,11 +36,12 @@ const StyledBlog = styled.div`
   .featured {
     align-items: center;
   }
+
   .container {
     display: flex;
     /* padding: 0 4em; */
     justify-content: space-between;
-    gap: 4em;
+    gap: 1em;
   }
   .description {
     text-align: left;
@@ -91,11 +92,11 @@ const StyledBlog = styled.div`
   }
   .popular.container {
     flex-direction: column;
-    gap: 4em;
+    gap: 1em;
   }
   .latest.container {
     flex-direction: column;
-    gap: 4em;
+    gap: 1em;
   }
   img#userImg {
     height: 60px !important;
@@ -194,7 +195,11 @@ function Blog(props: BlogProps) {
               <span className="category">{props.category}</span> -{" "}
               {props.published}
             </Typography>
-            <Link href={`/${props.type}/${props.id}`}>
+            <Link
+              href={`/${props.type == "card" ? "latest" : props.type}/${
+                props.id
+              }`}
+            >
               <Typography
                 variant={`${
                   props.type == "card"
@@ -214,7 +219,7 @@ function Blog(props: BlogProps) {
               {props.subtitle}
             </Typography>
           </div>
-          <Box sx={{ display: "flex", gap: "1em" }}>
+          <Box sx={{ display: "flex", width: "100%", gap: "1em" }}>
             <StyledUserImage
               src={props.author.img}
               width={60}
